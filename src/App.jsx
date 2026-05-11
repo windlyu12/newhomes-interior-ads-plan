@@ -100,7 +100,15 @@ function StepList({ steps = [] }) {
               <div className="text-base font-semibold text-neutral-900">{step.title}</div>
             </div>
           </div>
+          {step.paragraphs?.map((paragraph) => (
+            <p key={paragraph} className="mt-4 text-sm leading-7 text-neutral-700">
+              {paragraph}
+            </p>
+          ))}
           <PointList points={step.points} />
+          <DataTable table={step.table} />
+          <CardGrid cards={step.cards} />
+          <ScriptBlocks scripts={step.scripts} />
           {step.output && (
             <div className="mt-4 rounded-xl bg-white p-3 text-sm leading-6 text-neutral-700">
               <span className="font-semibold text-neutral-900">Output bắt buộc: </span>
@@ -486,78 +494,516 @@ export default function InteriorAdsMindmap() {
     {
       id: "renovation",
       label: "Mũi 2: Cải tạo",
-      title: "Sửa chữa/cải tạo căn hộ trọn gói",
-      subtitle: "Mũi săn đơn lớn, nhưng phải lọc ngân sách và tránh sa lầy việc sửa nhỏ.",
+      title: "Cải tạo / sửa chữa căn hộ trọn gói",
+      subtitle: "Mini-business unit riêng: content tạo trust, ads lấy lead có lọc, sale đặt lịch khảo sát, khảo sát tạo niềm tin.",
       color: "from-amber-700 to-orange-500",
       bg: "bg-amber-50",
+      detailed: true,
       sections: [
         {
-          heading: "Mục tiêu của mũi này",
+          heading: "1. Định vị mũi cải tạo",
+          paragraphs: [
+            "Mũi 2 không được định vị là nhận sửa nhà, sửa bếp, sửa WC hay sửa đồ lặt vặt. Cách nói đó kéo Newhomes xuống nhóm thợ sửa vặt, dễ bị so giá và hút lead nhỏ.",
+            "Định vị đúng: cải tạo căn hộ trọn gói có khảo sát hiện trạng, bóc tách hạng mục, tư vấn nên giữ, nên sửa và phần bắt buộc xử lý để tối ưu ngân sách, hạn chế phát sinh.",
+            "Khách cần cảm thấy Newhomes đọc được hiện trạng căn hộ cũ, hiểu rủi ro thi công, biết thứ tự xử lý và biết khoản nào nên làm trước, khoản nào có thể giữ lại."
+          ],
           points: [
-            "Săn nhóm cải tạo tổng thể hoặc sửa lớn, ưu tiên đơn từ 200tr trở lên.",
-            "Không định vị là sửa chữa giá rẻ hay nhận mọi việc lặt vặt.",
-            "Xây trust bằng năng lực khảo sát hiện trạng, bóc tách hạng mục, xử lý rủi ro thi công.",
-            "Dùng content before-after để chứng minh năng lực, không chỉ dùng render đẹp.",
-            "Lọc mạnh từ form để sale không bị chìm trong lead sửa nhỏ dưới 50–80tr."
+            "Mục tiêu chính không phải thật nhiều lead, mà là đủ lead sửa lớn có ngân sách từ 200tr+ và có khả năng đặt lịch khảo sát.",
+            "Không báo giá chốt qua ảnh nếu chưa khảo sát hiện trạng.",
+            "Không nhận sâu nhóm sửa nhỏ nếu làm loãng định vị và ăn thời gian sale.",
+            "Tất cả thông điệp phải dẫn về khảo sát hiện trạng trước khi báo giá."
           ]
         },
         {
-          heading: "Tệp khách cần tìm",
-          points: [
-            "Chủ căn hộ đã ở 8–15 năm, nhà xuống cấp, muốn làm lại để ở lâu dài.",
-            "Người mua lại căn cũ, muốn cải tạo tổng thể trước khi chuyển vào.",
-            "Gia đình thay đổi nhu cầu: sinh con, con lớn, đón bố mẹ, cần đổi công năng.",
-            "Chủ muốn cải tạo để cho thuê/bán lại giá tốt hơn.",
-            "Chủ căn có ngân sách rõ từ 200tr+, chấp nhận khảo sát hiện trạng trước khi báo giá."
+          heading: "2. Bốn chân dung khách hàng",
+          cards: [
+            {
+              title: "Nhóm A — Chủ căn đã ở lâu năm",
+              subtitle: "Ở căn hộ 8-15 năm, đồ xuống cấp, bếp cũ, WC cũ, sàn phồng, tường bong, điện nước bắt đầu có vấn đề.",
+              points: [
+                "Nỗi đau: không biết sửa từ đâu, sợ phát sinh, sợ ảnh hưởng sinh hoạt, không biết nên thay toàn bộ hay giữ lại một phần.",
+                "Mục tiêu: làm lại để ở lâu dài.",
+                "Thông điệp: căn hộ ở lâu năm không nên sửa từng món rời rạc; cần khảo sát tổng thể để biết phần nào nên giữ, phần nào bắt buộc xử lý."
+              ]
+            },
+            {
+              title: "Nhóm B — Người mới mua lại căn cũ",
+              subtitle: "Vừa mua lại căn hộ cũ, muốn cải tạo trước khi chuyển vào.",
+              points: [
+                "Nỗi đau: không thích hiện trạng chủ trước, muốn đổi công năng/phong cách, cần dự toán nhanh, sợ phát hiện lỗi bếp/WC/thấm/điện nước.",
+                "Mục tiêu: chuyển vào ở với phương án rõ về công năng, chi phí và tiến độ.",
+                "Thông điệp: mua lại căn hộ cũ? Đừng vội dọn vào ở. Khảo sát hiện trạng trước để lên phương án cải tạo."
+              ]
+            },
+            {
+              title: "Nhóm C — Gia đình đổi nhu cầu",
+              subtitle: "Có con nhỏ, con lớn cần phòng riêng, đón bố mẹ lên ở, cần thêm bàn học, kho chứa, bếp tiện hơn.",
+              points: [
+                "Nỗi đau: nhà không còn hợp sinh hoạt, thiếu lưu trữ, bếp/khu giặt phơi bất tiện, có thể phải thi công khi vẫn đang ở.",
+                "Mục tiêu: cải tạo lại công năng thay vì chỉ thay đồ nội thất.",
+                "Thông điệp: khi nhu cầu gia đình thay đổi, căn hộ cũ cần sửa lại công năng, không chỉ thay đồ."
+              ]
+            },
+            {
+              title: "Nhóm D — Sửa để cho thuê / bán lại",
+              subtitle: "Căn cũ khó cho thuê, hình ảnh xấu, đồ xuống cấp, muốn sửa để tăng giá thuê hoặc bán dễ hơn.",
+              points: [
+                "Nỗi đau: không muốn đầu tư quá tay, cần sửa đúng phần làm tăng giá trị căn, cần kiểm soát ngân sách và thi công nhanh.",
+                "Mục tiêu: tăng sức cạnh tranh của căn, không làm quá đắt.",
+                "Thông điệp: cải tạo căn hộ cũ để cho thuê không cần làm quá đắt, nhưng phải sửa đúng điểm khiến khách thuê xuống tiền."
+              ]
+            }
           ]
         },
         {
-          heading: "Thông điệp quảng cáo",
-          points: [
-            "Căn hộ cũ xuống cấp? Đừng sửa từng món rời rạc — cần khảo sát tổng thể trước khi báo giá.",
-            "Cải tạo căn hộ trọn gói: bóc tách phần nên giữ, phần nên sửa, phần bắt buộc phải xử lý.",
-            "Bếp cũ, WC xuống cấp, sàn/tủ hỏng: bên em khảo sát và lên phương án cải tạo theo ngân sách.",
-            "Mua lại căn hộ cũ? Cải tạo lại công năng trước khi chuyển vào ở.",
-            "Cải tạo căn hộ đang ở: lên kế hoạch thi công theo giai đoạn để giảm ảnh hưởng sinh hoạt."
+          heading: "3. Bộ lọc lead ngay từ đầu",
+          paragraphs: [
+            "Mũi cải tạo bắt buộc lọc mạnh. Không lọc thì sale sẽ chết chìm trong lead sửa nhỏ, khách hỏi giá qua ảnh và việc dưới định vị."
+          ],
+          table: {
+            headers: ["Nhóm lead", "Tiêu chí", "Cách xử lý"],
+            rows: [
+              ["Nhận mạnh", "Ngân sách 200tr+, cải tạo tổng thể/sửa lớn, đụng bếp/WC/sàn/điện nước, muốn làm trong 1-3 tháng", "Sale 1 gọi ngay, mục tiêu đặt lịch khảo sát"],
+              ["Nuôi", "Ngân sách 100-200tr, chưa rõ thời điểm, mới hỏi tham khảo", "Gửi checklist, bảng ngân sách, case nhỏ, đưa vào Zalo/remarketing"],
+              ["Cắt sớm", "Dưới 50-80tr, chỉ thay 1 món nhỏ, chưa có căn, chỉ hỏi báo giá qua ảnh", "Không dồn nguồn lực; chuyển sang tài liệu tự đọc hoặc từ chối mềm"]
+            ]
+          }
+        },
+        {
+          heading: "4. Phễu triển khai 5 tầng",
+          steps: [
+            {
+              label: "Tầng 1",
+              title: "Nhận biết vấn đề",
+              points: [
+                "Mục tiêu: khiến khách nhận ra căn cũ không thể sửa chắp vá.",
+                "Kênh: TikTok organic, Facebook/Zalo content, video before-after, bài phân tích lỗi căn hộ cũ.",
+                "Nội dung: 5 dấu hiệu căn hộ cũ nên cải tạo tổng thể; vì sao sửa bếp cũ kéo theo điện nước/tường/sàn; căn hộ ở 10 năm xuống cấp ở đâu; lỗi cải tạo phát sinh thêm 30-50tr."
+              ]
+            },
+            {
+              label: "Tầng 2",
+              title: "Kích hoạt nhu cầu",
+              points: [
+                "Mục tiêu: kéo khách từ đang nghĩ sang muốn được tư vấn.",
+                "Kênh: TikTok video có CTA, Zalo/Facebook lead form, Google Search, landing page.",
+                "Nội dung: checklist khảo sát căn cũ, mẫu dự toán theo ngân sách, case before-after, gợi ý phương án cải tạo theo hiện trạng."
+              ]
+            },
+            {
+              label: "Tầng 3",
+              title: "Thu lead có lọc",
+              points: [
+                "Mục tiêu: chỉ lấy lead đủ thông tin để sale phân loại.",
+                "Kênh: Zalo Lead Form, Facebook Lead Form, Google Lead Form hoặc landing form, TikTok Lead Generation nếu video đủ tốt.",
+                "Nguyên tắc: form phải hỏi ngân sách, thời điểm, tình trạng căn, mức độ sửa và hạng mục có đụng tới."
+              ]
+            },
+            {
+              label: "Tầng 4",
+              title: "Sale gọi lọc và đặt lịch khảo sát",
+              points: [
+                "Không báo giá vội. Sale xoay quanh 4 câu: hiện trạng thế nào, sửa một phần hay tổng thể, có đụng bếp/WC/sàn/điện nước/phá dỡ không, ngân sách và thời điểm là gì.",
+                "CTA chính: hẹn khảo sát hiện trạng, sau đó bóc tách phần nên giữ, nên sửa và dự toán theo ngân sách."
+              ]
+            },
+            {
+              label: "Tầng 5",
+              title: "Khảo sát, tư vấn, báo giá, chốt",
+              points: [
+                "Mục tiêu: biến buổi khảo sát thành điểm tạo trust.",
+                "Sau khảo sát phải có biên bản hiện trạng, danh sách hạng mục, phân loại bắt buộc/nên làm/có thể làm sau, dự toán sơ bộ, timeline, rủi ro phát sinh, ảnh hiện trạng có ghi chú."
+              ]
+            }
           ]
         },
         {
-          heading: "Kênh triển khai",
-          points: [
-            "Google Search: cải tạo căn hộ cũ, sửa căn hộ chung cư, cải tạo bếp chung cư, cải tạo WC chung cư.",
-            "TikTok: video before-after, phân tích lỗi nhà cũ, quy trình khảo sát, rủi ro phát sinh.",
-            "Facebook/Zalo Lead Form: chỉ chạy nếu form có lọc ngân sách và mức độ sửa.",
-            "Landing/page riêng: cải tạo căn hộ trọn gói, có quy trình, case, checklist, câu hỏi thường gặp.",
-            "Remarketing người xem video cải tạo, vì tệp này cần thời gian cân nhắc dài hơn."
+          heading: "5. Phân vai nhân sự",
+          paragraphs: [
+            "Nguồn lực hiện tại: 3 sale, 1 marketing tay ngang, 1 outsource ảnh/clip. Mũi cải tạo cần thêm vai trò kỹ thuật ở lead lớn vì khách hỏi nhiều về hiện trạng, điện nước, chống thấm, phá dỡ, vận chuyển và quy định tòa nhà."
+          ],
+          table: {
+            headers: ["Nhân sự", "Vai trò chính", "Việc cụ thể"],
+            rows: [
+              ["Marketing", "Điều phối mũi cải tạo", "Lên content plan, set form, quản lý ads, gom insight từ sale"],
+              ["Sale 1", "Lead nóng", "Gọi lead ngân sách 200tr+, đặt lịch khảo sát"],
+              ["Sale 2", "Lead trung bình", "Gọi lead 100-200tr, nuôi, gửi tài liệu, hẹn lại"],
+              ["Sale 3", "Chăm lại / remarketing", "Nhắn Zalo, gửi checklist, follow lead chưa chốt lịch"],
+              ["Outsource ảnh/clip", "Sản xuất visual", "Dựng video before-after, ảnh checklist, carousel, banner ads"],
+              ["Chủ/quản lý kỹ thuật", "Chuyên môn thi công", "Đi khảo sát lead lớn, kiểm tra báo giá, tư vấn rủi ro thi công"]
+            ]
+          }
+        },
+        {
+          heading: "6. Kênh triển khai chi tiết",
+          cards: [
+            {
+              title: "Kênh 1 — Google Search",
+              subtitle: "Ưu tiên vì khách search cải tạo căn hộ thường đã có nhu cầu rõ.",
+              points: [
+                "Campaign: cải tạo căn hộ tổng thể, cải tạo theo hạng mục đau, mua lại căn cũ, remarketing nhẹ.",
+                "Từ khóa test: cải tạo căn hộ, cải tạo chung cư cũ, sửa nhà chung cư trọn gói, cải tạo bếp chung cư, sửa WC chung cư, cải tạo căn hộ mua lại.",
+                "Từ khóa phủ định: miễn phí, tự làm, giá rẻ, thợ lẻ, sửa vặt, thay bóng đèn, sửa điện nước nhỏ, tuyển dụng, học nghề, vật liệu, phụ kiện.",
+                "Không đưa về trang chủ; dùng landing outline riêng cho cải tạo căn hộ trọn gói."
+              ]
+            },
+            {
+              title: "Kênh 2 — Zalo Lead Form",
+              subtitle: "Dùng để lấy số điện thoại nhưng phải lọc kỹ ngân sách và mức độ sửa.",
+              points: [
+                "Tiêu đề form: Đăng ký khảo sát cải tạo căn hộ cũ.",
+                "Mô tả: khảo sát bếp, WC, sàn, điện nước, tường/trần và tư vấn phần nên giữ, nên sửa, dự toán theo ngân sách.",
+                "Test 4 góc: căn cũ xuống cấp, mua lại căn cũ, ngân sách rõ, sợ phát sinh.",
+                "Không dùng form chỉ có họ tên, số điện thoại, nhu cầu tư vấn."
+              ]
+            },
+            {
+              title: "Kênh 3 — TikTok Organic",
+              subtitle: "Kênh xây trust, tạo kho video cho sale và test insight trước khi đốt ads.",
+              points: [
+                "5 trục: lỗi căn hộ cũ, before-after, giá & ngân sách, quy trình khảo sát, rủi ro phát sinh.",
+                "Lịch tối thiểu 4 video/tuần: Thứ 2 lỗi căn cũ, Thứ 4 before-after, Thứ 6 ngân sách, Chủ nhật quy trình/rủi ro/FAQ.",
+                "Format: 5-8 giây hook, 10-20 giây giải thích 2-3 ý, 5 giây CTA nhẹ.",
+                "CTA mẫu: nhắn 'cải tạo' để nhận checklist khảo sát."
+              ]
+            },
+            {
+              title: "Kênh 4 — Facebook Content / Group / Page",
+              subtitle: "Dùng để giải thích sâu, lưu bài dài cho sale gửi khách và nuôi remarketing.",
+              points: [
+                "Tần suất: 2 bài phân tích lỗi/tuần, 1 case before-after/tuần, 1 album hiện trạng/tuần, 1 bài ngân sách/tuần, 1 FAQ/tuần.",
+                "10 bài cần có: khảo sát trước báo giá, checklist mua lại căn cũ, ngân sách 200/300/400tr, căn ở 10 năm nên sửa gì, bếp/WC dễ phát sinh, cải tạo đang ở, cải tạo cho thuê, giữ tủ cũ hay bỏ, quy trình báo giá."
+              ]
+            },
+            {
+              title: "Kênh 5 — Remarketing",
+              subtitle: "Không kỳ vọng khách thấy ads là chốt ngay; phải bám lại theo trạng thái.",
+              points: [
+                "Tệp: người xem video, vào landing chưa form, đã điền form chưa chốt lịch, đã nhận checklist, đã nhắn Zalo chưa khảo sát.",
+                "Nội dung: case before-after, checklist, mời khảo sát, bài vì sao cần khảo sát trước báo giá, case tương tự sau khảo sát."
+              ]
+            }
           ]
         },
         {
-          heading: "Form lọc lead nên hỏi",
-          points: [
-            "Căn hộ ở chung cư/khu nào? Diện tích khoảng bao nhiêu m2?",
-            "Căn đang ở, để trống, hay mới mua lại?",
-            "Anh/chị muốn sửa một phần hay cải tạo tổng thể?",
-            "Có đụng đến bếp, WC, sàn, điện nước, trần/tường, phá dỡ không?",
-            "Ngân sách dự kiến: dưới 100tr, 100–200tr, 200–400tr, trên 400tr?"
+          heading: "7. Form lead và mẫu ads",
+          table: {
+            headers: ["Câu hỏi form", "Option / kiểu trả lời"],
+            rows: [
+              ["Căn hộ của anh/chị ở khu/chung cư nào?", "Điền ngắn"],
+              ["Diện tích căn khoảng bao nhiêu?", "1N / 2N / 3N / khác"],
+              ["Tình trạng căn hiện tại?", "Đang ở / Để trống / Mới mua lại / Đang cho thuê"],
+              ["Anh/chị muốn sửa mức nào?", "Một phần / Sửa nhiều hạng mục / Cải tạo tổng thể"],
+              ["Có đụng đến hạng mục nào?", "Bếp / WC / Sàn / Điện nước / Trần tường / Tủ nội thất / Chưa rõ"],
+              ["Ngân sách dự kiến?", "Dưới 100tr / 100-200tr / 200-400tr / Trên 400tr"],
+              ["Thời điểm muốn làm?", "Trong 1 tháng / 1-3 tháng / Sau 3 tháng / Chưa rõ"]
+            ]
+          },
+          cards: [
+            { title: "Z1 — Căn cũ xuống cấp", points: ["Bếp cũ, WC cũ, sàn hỏng — khảo sát tổng thể trước khi sửa."] },
+            { title: "Z2 — Mua lại căn cũ", points: ["Mua căn hộ cũ? Cải tạo lại công năng trước khi vào ở."] },
+            { title: "Z3 — Ngân sách rõ", points: ["Cải tạo căn hộ theo ngân sách: phần nên giữ, phần nên sửa."] },
+            { title: "Z4 — Sợ phát sinh", points: ["Đừng sửa chắp vá — bóc tách hạng mục trước khi báo giá."] }
           ]
         },
         {
-          heading: "Việc cần làm ngay",
+          heading: "8. Bộ tài liệu bắt buộc",
+          cards: [
+            {
+              title: "Tài liệu cho khách",
+              points: [
+                "Checklist khảo sát căn hộ cũ.",
+                "Bảng ngân sách cải tạo tham khảo.",
+                "Quy trình cải tạo 5 bước.",
+                "Case before-after.",
+                "FAQ cải tạo căn hộ.",
+                "Bảng phân loại hạng mục: nên giữ / nên sửa / làm mới.",
+                "Mẫu timeline thi công.",
+                "Hồ sơ năng lực ngắn."
+              ]
+            },
+            {
+              title: "Tài liệu nội bộ sale",
+              points: [
+                "Script gọi lead cải tạo.",
+                "Bộ câu hỏi khảo sát sơ bộ.",
+                "Form chấm điểm lead.",
+                "Mẫu biên bản khảo sát.",
+                "Bảng objection handling.",
+                "Bảng phân quyền follow.",
+                "CRM pipeline."
+              ]
+            }
+          ]
+        },
+        {
+          heading: "9. Checklist khảo sát căn cũ",
+          table: {
+            headers: ["Nhóm", "Cần kiểm tra"],
+            rows: [
+              ["Bếp", "Tủ bếp, mặt đá, chậu vòi, thiết bị, hệ điện, cấp thoát nước"],
+              ["WC", "Chống thấm, thoát sàn, thiết bị, gạch, trần, mùi, thấm sang phòng"],
+              ["Sàn", "Phồng, cong, ẩm, hở mép, nền bên dưới"],
+              ["Tường", "Nứt, bong sơn, ẩm mốc, thấm"],
+              ["Trần", "Thấm, nứt, cao độ, hệ đèn, điều hòa"],
+              ["Điện", "Ổ cắm, tải thiết bị, dây cũ, aptomat"],
+              ["Nước", "Áp lực nước, rò rỉ, đường cấp/thoát"],
+              ["Nội thất cũ", "Tủ có giữ được không, bản lề/ray có hỏng không"],
+              ["Công năng", "Thiếu lưu trữ, thiếu bàn học/làm việc, bếp bất tiện"],
+              ["Quy định tòa nhà", "Giờ thi công, vận chuyển, phá dỡ, tập kết vật liệu"]
+            ]
+          }
+        },
+        {
+          heading: "10. Lead scoring cho sale",
+          table: {
+            headers: ["Tiêu chí", "Điểm"],
+            rows: [
+              ["Ngân sách trên 400tr", "+25"],
+              ["Ngân sách 200-400tr", "+20"],
+              ["Cải tạo tổng thể", "+25"],
+              ["Có đụng bếp/WC/sàn/điện nước", "+20"],
+              ["Muốn làm trong 1 tháng", "+15"],
+              ["Căn đã trống/mới mua lại", "+10"],
+              ["Đồng ý khảo sát", "+15"],
+              ["Chỉ hỏi giá, chưa rõ nhu cầu", "-20"],
+              ["Ngân sách dưới 100tr", "-30"]
+            ]
+          },
+          cards: [
+            { title: "Lead A — 70+ điểm", points: ["Sale 1 gọi ngay, cố gắng hẹn khảo sát."] },
+            { title: "Lead B — 40-69 điểm", points: ["Sale 2 gọi, gửi tài liệu, hẹn tư vấn."] },
+            { title: "Lead C — dưới 40 điểm", points: ["Sale 3 nuôi bằng Zalo/content."] },
+            { title: "Lead loại", points: ["Dưới 100tr hoặc sửa nhỏ, không dồn nguồn lực."] }
+          ]
+        },
+        {
+          heading: "11. Script sale gọi lead",
+          scripts: [
+            {
+              title: "Mở đầu",
+              body: "Em chào anh/chị, em là [Tên] bên Nội thất Newhomes. Em thấy anh/chị có để lại thông tin về nhu cầu cải tạo căn hộ. Em xin phép hỏi nhanh vài ý để bên em xem căn mình thuộc nhóm sửa một phần hay cải tạo tổng thể, rồi tư vấn hướng làm phù hợp ngân sách ạ."
+            },
+            {
+              title: "Câu hỏi lọc",
+              body: "1. Căn của mình ở khu/chung cư nào ạ?\n2. Căn khoảng bao nhiêu m2, mấy phòng ngủ?\n3. Hiện căn đang ở, để trống hay mới mua lại?\n4. Mình muốn sửa những phần nào: bếp, WC, sàn, tường/trần, điện nước hay nội thất?\n5. Mục tiêu của mình là để ở lâu dài, cho thuê hay bán lại?\n6. Mình dự kiến ngân sách khoảng dưới 100, 100-200, 200-400 hay trên 400tr?\n7. Mình muốn triển khai trong khoảng thời gian nào?\n8. Anh/chị đã có bản vẽ/mặt bằng/ảnh hiện trạng chưa?"
+            },
+            {
+              title: "Chuyển sang khảo sát",
+              body: "Với căn cải tạo, nếu chỉ nhìn ảnh thì bên em có thể ước lượng rất sơ bộ nhưng dễ sai, nhất là phần bếp, WC, điện nước, sàn và tường. Phương án tốt hơn là bên em qua khảo sát hiện trạng, sau đó bóc tách giúp anh/chị phần nào nên giữ, phần nào nên sửa, phần nào bắt buộc phải xử lý. Như vậy báo giá sẽ sát hơn và tránh phát sinh."
+            },
+            {
+              title: "Nếu khách hỏi khoảng bao nhiêu tiền",
+              body: "Em có thể chia khung để anh/chị dễ hình dung. Nếu chỉ làm một phần thì có thể từ 100-200tr. Nếu cải tạo nhiều hạng mục như bếp, sàn, WC, trần tường, nội thất thì thường từ 200-400tr trở lên, tùy diện tích và mức vật liệu. Nhưng để báo sát thì bên em cần khảo sát hiện trạng trước."
+            },
+            {
+              title: "Nếu khách nói gửi báo giá qua Zalo đi",
+              body: "Dạ được, em có thể gửi anh/chị bảng ngân sách tham khảo trước. Nhưng báo giá cải tạo qua ảnh thường chỉ đúng phần nhìn thấy, còn phần phát sinh hay nằm ở điện nước, chống thấm, nền sàn, tường/trần. Em gửi trước checklist để anh/chị xem, sau đó mình hẹn một buổi khảo sát ngắn sẽ chắc hơn ạ."
+            }
+          ]
+        },
+        {
+          heading: "12. CRM pipeline và SLA",
+          table: {
+            headers: ["Nhóm", "Chi tiết"],
+            rows: [
+              ["Trạng thái CRM", "Lead mới, đã gọi lần 1, không nghe máy, đã kết nối, không phù hợp ngân sách, cần nuôi thêm, đã gửi checklist, đã hẹn khảo sát, đã khảo sát, đã gửi phương án/báo giá, đang thương lượng, chốt, rớt"],
+              ["Lead mới", "Gọi trong 5-15 phút"],
+              ["Không nghe máy", "Gọi lại 3 lần trong 24h"],
+              ["Có nhu cầu nhưng bận", "Nhắn Zalo ngay sau cuộc gọi"],
+              ["Lead A", "Phải có lịch khảo sát hoặc lịch gọi sâu"],
+              ["Sau khảo sát", "Gửi recap trong 24h"],
+              ["Sau báo giá", "Follow trong 24-48h"]
+            ]
+          }
+        },
+        {
+          heading: "13. Timeline triển khai 45 ngày",
+          steps: [
+            {
+              label: "Ngày 1-7",
+              title: "Chuẩn bị nền",
+              points: ["Mục tiêu: có đủ tài liệu, form, landing tối thiểu, script và checklist."],
+              table: {
+                headers: ["Việc", "Người làm", "Output"],
+                rows: [
+                  ["Chốt định vị mũi cải tạo", "Chủ + Marketing", "1 trang định vị"],
+                  ["Chia 4 tệp khách chính", "Marketing", "File chân dung khách"],
+                  ["Soạn checklist khảo sát căn cũ", "Marketing + kỹ thuật", "PDF/checklist"],
+                  ["Soạn script sale", "Marketing + Sale", "Script gọi lead"],
+                  ["Làm form lead có lọc ngân sách", "Marketing", "Zalo/Facebook/landing form"],
+                  ["Làm bảng lead scoring", "Marketing + Sale lead", "Sheet chấm điểm"],
+                  ["Viết landing page cải tạo", "Marketing", "Nội dung landing"],
+                  ["Thiết kế 4 ảnh ads", "Outsource", "4 banner"],
+                  ["Dựng 4 video TikTok đầu", "Outsource + Marketing", "4 video"],
+                  ["Training sale", "Chủ + Marketing", "Sale hiểu script, phân loại lead"]
+                ]
+              }
+            },
+            {
+              label: "Ngày 8-14",
+              title: "Test nhẹ",
+              points: [
+                "Chạy Google Search nhỏ 200-300k/ngày.",
+                "Chạy Zalo Form nhỏ 200-300k/ngày.",
+                "Đăng TikTok 4 video/tuần và Facebook 3-5 bài/tuần.",
+                "Sale gọi trong 15 phút và ghi lý do lead rớt.",
+                "Đọc tỷ lệ nghe máy, lead 200tr+, có căn thật, hẹn khảo sát, lý do từ chối, mẫu kéo lead sửa nhỏ."
+              ]
+            },
+            {
+              label: "Ngày 15-30",
+              title: "Tối ưu",
+              points: [
+                "Cắt ad kéo lead dưới 100tr nhiều.",
+                "Tăng câu hỏi ngân sách, bắt buộc chọn ngân sách.",
+                "Tách campaign theo tệp tốt: mới mua lại căn cũ, ở lâu năm, sửa tổng thể.",
+                "Làm thêm video theo câu hỏi thật của khách.",
+                "Tăng remarketing và chuẩn hóa recap sau khảo sát trong 24h."
+              ],
+              output: "10-15 video TikTok, 10 bài Facebook, 1 landing page, 1 checklist PDF, 1 bảng ngân sách, 1 script sale, 1 bảng lead scoring, 2-3 case before-after, dữ liệu biết góc ads nào ra lead tốt."
+            },
+            {
+              label: "Ngày 31-45",
+              title: "Scale có kiểm soát",
+              points: ["Không scale nếu chỉ thấy CPL rẻ nhưng toàn lead sửa nhỏ."],
+              table: {
+                headers: ["Điều kiện scale", "Hành động"],
+                rows: [
+                  ["Có lead 200tr+ ổn", "Tăng ngân sách 20-30%"],
+                  ["Có lịch khảo sát đều", "Tăng Google/Zalo"],
+                  ["TikTok có video giữ chân tốt", "Chạy Spark/boost nhẹ"],
+                  ["Landing có form tốt", "Đẩy traffic về landing"],
+                  ["Sale quá tải", "Giảm lead form, tăng lọc"]
+                ]
+              }
+            }
+          ]
+        },
+        {
+          heading: "14. Phân bổ ngân sách",
+          table: {
+            headers: ["Phương án", "Kênh", "Ngân sách", "Mục tiêu"],
+            rows: [
+              ["10tr/tháng", "Google Search", "4tr", "Bắt nhu cầu chủ động"],
+              ["10tr/tháng", "Zalo Lead Form", "3tr", "Test lead có lọc"],
+              ["10tr/tháng", "Remarketing", "1tr", "Bám lại"],
+              ["10tr/tháng", "Sản xuất ảnh/video", "2tr", "Tạo content nền"],
+              ["20tr/tháng", "Google Search", "7tr", "Kênh chính"],
+              ["20tr/tháng", "Zalo Lead Form", "5tr", "Test nhiều thông điệp"],
+              ["20tr/tháng", "Facebook/Zalo remarketing", "2tr", "Nuôi lại"],
+              ["20tr/tháng", "TikTok boost/Spark nhẹ", "2tr", "Đẩy video tốt"],
+              ["20tr/tháng", "Sản xuất ảnh/video", "4tr", "Duy trì content"]
+            ]
+          },
+          points: ["Không chia quá nhiều campaign.", "Hai tuần đầu chỉ test 2-3 góc thông điệp, không mở ồ ạt."]
+        },
+        {
+          heading: "15. Asset tháng đầu",
+          cards: [
+            {
+              title: "4 banner ads đầu tiên",
+              points: [
+                "Căn hộ cũ xuống cấp? Khảo sát tổng thể trước khi sửa. CTA: Đăng ký khảo sát.",
+                "Mới mua lại căn hộ cũ? Cải tạo lại trước khi vào ở. CTA: Nhận tư vấn phương án.",
+                "Đừng sửa từng món rời rạc. Bóc tách phần nên giữ / nên sửa / bắt buộc xử lý. CTA: Nhận checklist cải tạo.",
+                "Cải tạo căn hộ theo ngân sách từ 200tr+. CTA: Đặt lịch khảo sát."
+              ]
+            },
+            {
+              title: "8 video TikTok đầu tiên",
+              points: [
+                "Căn hộ cũ không nên sửa hỏng đâu vá đó.",
+                "Mua lại căn hộ cũ cần kiểm tra 7 điểm này.",
+                "200tr cải tạo căn hộ làm được gì?",
+                "Vì sao sửa WC chung cư dễ phát sinh?",
+                "Cải tạo bếp cũ đừng chỉ thay cánh tủ.",
+                "Căn hộ ở 10 năm thường xuống cấp ở đâu?",
+                "Cải tạo để cho thuê khác gì để ở?",
+                "Một buổi khảo sát cải tạo gồm những gì?"
+              ]
+            },
+            {
+              title: "Landing page outline",
+              points: [
+                "Hero: Cải tạo căn hộ cũ trọn gói — khảo sát hiện trạng trước khi báo giá.",
+                "Căn thuộc nhóm nào, vì sao không báo giá qua ảnh, khảo sát những gì, quy trình 5 bước, ngân sách tham khảo, form đăng ký khảo sát."
+              ]
+            }
+          ]
+        },
+        {
+          heading: "16. Vận hành hằng ngày và hằng tuần",
+          cards: [
+            { title: "Mỗi sáng", points: ["Marketing check lead hôm trước, CPL, ngân sách lead, mẫu ads kéo rác, gửi lead cho sale.", "Sale gọi lại lead chưa nghe máy, cập nhật CRM, báo câu hỏi/lý do từ chối."] },
+            { title: "Mỗi chiều", points: ["Họp nhanh 15 phút: bao nhiêu lead, nghe máy, 200tr+, lịch khảo sát, khách hỏi gì nhiều, có cần sửa ads/form/script không."] },
+            { title: "Mỗi tuần", points: ["Họp 60 phút: xem từng kênh, từng thông điệp, chất lượng lead, cắt mẫu kém, chọn 3 insight làm content tuần sau, update script sale."] }
+          ]
+        },
+        {
+          heading: "17. KPI cần theo dõi",
+          table: {
+            headers: ["Nhóm KPI", "Chỉ số", "Mục tiêu ban đầu"],
+            rows: [
+              ["Marketing", "CPL Zalo/Form", "Không cố rẻ, chấp nhận cao nếu lead tốt"],
+              ["Marketing", "Tỷ lệ lead ngân sách 200tr+", "Tối thiểu 25-35%"],
+              ["Marketing", "Tỷ lệ lead có thời điểm 1-3 tháng", "Tối thiểu 30%"],
+              ["Marketing", "Tỷ lệ form đủ thông tin", "Trên 80%"],
+              ["Marketing", "Video TikTok/tháng", "16-20 video"],
+              ["Marketing", "Bài Facebook/tháng", "12-16 bài"],
+              ["Sale", "Gọi lead mới", "Trong 15 phút"],
+              ["Sale", "Tỷ lệ kết nối", "50-70%"],
+              ["Sale", "Tỷ lệ hẹn khảo sát/lead tốt", "20-35%"],
+              ["Sale", "Tỷ lệ khảo sát xong có báo giá", "80%+"],
+              ["Sale", "Tỷ lệ báo giá sang chốt", "Theo dõi sau 30-60 ngày"]
+            ]
+          },
           points: [
-            "Làm checklist khảo sát căn cũ: bếp, WC, sàn, điện nước, tường, trần, tủ, chống thấm.",
-            "Soạn bài/clip: 'Vì sao cải tạo căn hộ cũ không thể báo giá qua ảnh'.",
-            "Tạo form có câu hỏi ngân sách bắt buộc để loại lead sửa nhỏ.",
-            "Làm bảng phân loại: sửa nhỏ, sửa vừa, cải tạo tổng thể; sale biết nhóm nào nên theo mạnh.",
-            "Thu thập hoặc dựng case before-after, kể cả case minh họa, để phục vụ TikTok và sale."
+            "KPI thật sự quan trọng không phải CPL.",
+            "Cần nhìn chi phí / lịch khảo sát chất lượng, chi phí / báo giá gửi ra, chi phí / đơn chốt."
+          ]
+        },
+        {
+          heading: "18. Những lỗi cần tránh",
+          cards: [
+            { title: "Chạy ads chung chung", points: ["Không dùng kiểu: thiết kế thi công nội thất trọn gói, giá tốt, uy tín. Câu này quá rộng và không đánh đúng nỗi đau cải tạo."] },
+            { title: "Form quá dễ", points: ["Form càng dễ CPL càng có thể rẻ, nhưng sale sẽ mệt hơn. Mũi này cần lead ít nhưng rõ."] },
+            { title: "Báo giá qua ảnh quá sớm", points: ["Dễ sai hiện trạng, sai phạm vi công việc, bị so giá và phát sinh sau này."] },
+            { title: "Nhận cả sửa nhỏ", points: ["Nếu nhận cả sửa nhỏ, định vị tụt xuống đội sửa vặt, sale mất thời gian, biên lợi nhuận thấp."] },
+            { title: "Chỉ dùng render đẹp", points: ["Cải tạo cần before-after, ảnh hiện trạng, checklist, quy trình. Render đẹp không đủ tạo trust."] }
+          ]
+        },
+        {
+          heading: "19. Kế hoạch 7 ngày tới",
+          steps: [
+            { label: "Ngày 1", title: "Chốt định vị và 4 nhóm khách", points: ["Định vị: cải tạo căn hộ trọn gói — khảo sát hiện trạng trước khi báo giá.", "Nhóm khách: căn ở lâu năm, mới mua lại căn cũ, gia đình đổi nhu cầu, sửa để cho thuê/bán lại."] },
+            { label: "Ngày 2", title: "Làm 3 tài liệu nền", points: ["Checklist khảo sát căn hộ cũ.", "Bảng ngân sách cải tạo tham khảo.", "Script sale gọi lead."] },
+            { label: "Ngày 3", title: "Set form lead", points: ["Zalo form, Facebook form nếu chạy, landing form.", "Bắt buộc có câu hỏi ngân sách và thời điểm triển khai."] },
+            { label: "Ngày 4", title: "Viết landing page", points: ["Chưa cần quá đẹp, nhưng phải đủ vấn đề, quy trình, checklist, ngân sách, form."] },
+            { label: "Ngày 5", title: "Làm 4 ảnh ads", points: ["Căn cũ xuống cấp.", "Mua lại căn cũ.", "Đừng sửa chắp vá.", "Cải tạo theo ngân sách."] },
+            { label: "Ngày 6", title: "Dựng 4 video đầu", points: ["Vì sao không báo giá cải tạo qua ảnh.", "Căn hộ cũ cần kiểm tra 7 điểm.", "200tr cải tạo được gì.", "Sửa WC chung cư dễ phát sinh ở đâu."] },
+            { label: "Ngày 7", title: "Training sale", points: ["Cách lọc lead.", "Cách không báo giá vội.", "Cách chuyển sang khảo sát.", "Cách chấm điểm lead.", "Cách cập nhật CRM."] }
+          ]
+        },
+        {
+          heading: "20. Bản vận hành rút gọn",
+          paragraphs: [
+            "Content tạo trust → Ads lấy lead có lọc → Sale đặt lịch khảo sát → Khảo sát tạo niềm tin → Báo giá theo hạng mục → Follow bằng case tương tự."
+          ],
+          points: [
+            "Trong tháng đầu, đừng cố scale.",
+            "Chứng minh góc thông điệp nào ra lead tốt, form nào lọc được ngân sách 200tr+, sale nào đặt lịch khảo sát tốt, loại khách nào dễ chốt nhất và nội dung nào khách phản hồi nhiều nhất."
           ]
         }
       ],
       checklist: [
-        "Không chạy câu 'sửa chữa căn hộ giá rẻ'.",
-        "Không nhận tư vấn sâu cho lead ngân sách quá thấp nếu không có khả năng chốt.",
-        "Lead cải tạo phải được gọi bằng kịch bản khảo sát hiện trạng, không báo giá vội.",
-        "CPL cao vẫn chấp nhận nếu lead có ngân sách 200tr+ và thời điểm sửa rõ.",
-        "Nên có quy trình khảo sát/báo giá chuẩn để tạo cảm giác chuyên nghiệp."
+        "Chốt định vị: cải tạo căn hộ trọn gói, khảo sát hiện trạng trước khi báo giá.",
+        "Tạo checklist khảo sát, bảng ngân sách tham khảo và script sale.",
+        "Set form lọc ngân sách, thời điểm, mức độ sửa và hạng mục đụng tới.",
+        "Chuẩn bị landing outline cho cải tạo căn hộ trọn gói.",
+        "Sản xuất 4 banner và 4 video đầu tiên.",
+        "Training sale cách lọc lead, không báo giá vội và chuyển sang khảo sát.",
+        "Bắt đầu test Google/Zalo nhỏ, đọc chất lượng lead thay vì chỉ đọc CPL."
       ]
     },
     {
