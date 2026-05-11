@@ -1,5 +1,135 @@
 import { useState } from "react";
 
+function PointList({ points = [] }) {
+  if (!points.length) return null;
+
+  return (
+    <ul className="mt-4 space-y-3 text-sm leading-6 text-neutral-700">
+      {points.map((point) => (
+        <li key={point} className="flex gap-3">
+          <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-neutral-800" />
+          <span>{point}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function DataTable({ table }) {
+  if (!table) return null;
+
+  return (
+    <div className="mt-4 overflow-x-auto rounded-2xl border border-neutral-200">
+      <table className="min-w-full border-collapse bg-white text-left text-sm">
+        <thead className="bg-neutral-900 text-white">
+          <tr>
+            {table.headers.map((header) => (
+              <th key={header} className="whitespace-nowrap px-4 py-3 font-semibold">
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {table.rows.map((row, rowIndex) => (
+            <tr key={`${rowIndex}-${row[0]}`} className={rowIndex % 2 ? "bg-neutral-50" : "bg-white"}>
+              {row.map((cell, cellIndex) => (
+                <td key={`${rowIndex}-${cellIndex}`} className="min-w-44 border-t border-neutral-200 px-4 py-3 leading-6 text-neutral-700">
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function ScriptBlocks({ scripts = [] }) {
+  if (!scripts.length) return null;
+
+  return (
+    <div className="mt-4 grid gap-3">
+      {scripts.map((script) => (
+        <div key={script.title} className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4">
+          <div className="text-sm font-semibold text-neutral-900">{script.title}</div>
+          <pre className="mt-3 whitespace-pre-wrap font-sans text-sm leading-7 text-neutral-700">{script.body}</pre>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CardGrid({ cards = [] }) {
+  if (!cards.length) return null;
+
+  return (
+    <div className="mt-4 grid gap-4 lg:grid-cols-3">
+      {cards.map((card) => (
+        <div key={card.title} className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4">
+          <div className="text-sm font-semibold text-neutral-900">{card.title}</div>
+          {card.subtitle && <p className="mt-2 text-sm leading-6 text-neutral-600">{card.subtitle}</p>}
+          {card.paragraphs?.map((paragraph) => (
+            <p key={paragraph} className="mt-3 text-sm leading-7 text-neutral-700">
+              {paragraph}
+            </p>
+          ))}
+          <PointList points={card.points} />
+          <DataTable table={card.table} />
+          <ScriptBlocks scripts={card.scripts} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function StepList({ steps = [] }) {
+  if (!steps.length) return null;
+
+  return (
+    <div className="mt-4 grid gap-4">
+      {steps.map((step, index) => (
+        <div key={step.title} className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-900 text-xs font-semibold text-white">
+              {index + 1}
+            </div>
+            <div>
+              <div className="text-xs font-medium uppercase tracking-[0.18em] text-neutral-500">{step.label}</div>
+              <div className="text-base font-semibold text-neutral-900">{step.title}</div>
+            </div>
+          </div>
+          <PointList points={step.points} />
+          {step.output && (
+            <div className="mt-4 rounded-xl bg-white p-3 text-sm leading-6 text-neutral-700">
+              <span className="font-semibold text-neutral-900">Output bắt buộc: </span>
+              {step.output}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SectionContent({ section }) {
+  return (
+    <>
+      {section.paragraphs?.map((paragraph) => (
+        <p key={paragraph} className="mt-4 text-sm leading-7 text-neutral-700">
+          {paragraph}
+        </p>
+      ))}
+      <PointList points={section.points} />
+      <DataTable table={section.table} />
+      <CardGrid cards={section.cards} />
+      <ScriptBlocks scripts={section.scripts} />
+      <StepList steps={section.steps} />
+    </>
+  );
+}
+
 export default function InteriorAdsMindmap() {
   const tabs = [
     {
@@ -53,77 +183,304 @@ export default function InteriorAdsMindmap() {
       id: "vin-empty",
       label: "Mũi 1: Căn trống Vin",
       title: "Căn đã bàn giao nhưng để trống tại Vin Ocean Park",
-      subtitle: "Mũi kiếm lead gần nhất vì đang có data và insight rõ về căn trống sau bàn giao.",
+      subtitle: "Kế hoạch 30 ngày để tìm chủ căn đã nhận nhà nhưng còn lưỡng lự, rồi bán phương án nội thất đúng mục đích.",
       color: "from-emerald-700 to-teal-500",
       bg: "bg-emerald-50",
+      detailed: true,
       sections: [
         {
-          heading: "Mục tiêu của mũi này",
+          heading: "1. Bản chất của mũi 1",
+          paragraphs: [
+            "Mũi này không phải là chạy ads cho chủ căn hộ Vin Ocean Park làm nội thất. Câu đó quá rộng, quá giống đối thủ và rất dễ bị kéo vào so giá.",
+            "Định nghĩa đúng: tìm những chủ căn đã nhận nhà nhưng vẫn để trống, đang lưỡng lự giữa để ở, cho thuê, bán lại hoặc giữ tài sản, rồi bán cho họ một phương án nội thất đúng mục đích, không làm thừa.",
+            "Newhomes không xuất hiện như thêm một đội thi công nội thất. Vai trò cần chiếm trong đầu khách là người giúp chủ căn quyết định: căn này nên làm đến mức nào là hợp lý."
+          ],
           points: [
-            "Biến trạng thái căn trống thành lý do mua: nhà đã nhận nhưng chưa khai thác, vốn nằm im, chủ đang lăn tăn.",
-            "Ưu tiên tạo lịch tư vấn/khảo sát với chủ căn 2N/3N, hoặc chủ căn chưa quyết ở hay cho thuê.",
-            "Với studio/1N chỉ bán bằng gói chuẩn hóa tối ưu cho thuê, không sa lầy tư vấn quá sâu.",
-            "Không bán chung chung 'thi công nội thất trọn gói', mà bán câu hỏi 'làm bao nhiêu là vừa'.",
-            "Dùng data Vin để tiếp cận trực tiếp, nhưng ads phải lọc rất mạnh bằng form."
+            "Không bán 'gói nội thất đẹp' trước. Bán quyết định đúng: cho thuê, để ở hay giữ tài sản.",
+            "Không khuyên làm full khi chưa rõ mục đích khai thác căn.",
+            "Không để sale báo giá vội. Sale phải hỏi mục đích sử dụng trước khi nói tiền.",
+            "Thông điệp lõi: căn đã nhận nhưng vẫn để trống? Đừng vội làm full."
           ]
         },
         {
-          heading: "Tệp khách cần tách",
+          heading: "2. Insight thị trường thuê",
+          paragraphs: [
+            "Giá thuê tại Vinhomes Ocean Park có biên rất rộng theo nguồn tin, loại căn, tòa, view, diện tích, nội thất và tình trạng khai thác. Vì vậy không dùng số thuê như cam kết đầu ra, mà dùng nó như insight chiến lược: cùng một căn, làm nội thất sai mức có thể làm vốn bị chôn hoặc làm căn kém cạnh tranh.",
+            "Hàm ý quảng cáo: không bán 'nội thất đẹp'. Phải bán 'nội thất phù hợp với mức thuê kỳ vọng'. Studio/1N kỳ vọng thuê 6-7 triệu/tháng không nên bị tư vấn làm quá tay. Nhưng 2N/3N có khả năng ở sau này thì cũng không nên làm quá rẻ để rồi phải sửa lại."
+          ],
           points: [
-            "Studio/1N đu đỉnh: kẹt hàng, sợ bỏ thêm vốn, cần phương án cho thuê tối thiểu.",
-            "2N/3N tích sản: có tiền hơn, chưa sốt ruột nhưng để lâu cũng xót, có thể ra đơn lớn.",
-            "Chủ chưa quyết: không biết nên để ở, cho thuê, bán lại hay giữ tài sản.",
-            "Khách đã có báo giá bên khác: dùng góc second opinion để check lại phương án và phần dễ phát sinh.",
-            "Chủ có nhiều căn/đội sale kẹt hàng: cần gói đầu tư gọn, dễ thay thế, dễ cho thuê."
+            "Studio/1N: tư vấn theo vốn bỏ thêm và tốc độ cho thuê.",
+            "2N/3N: tư vấn theo kịch bản linh hoạt giữa cho thuê trước và về ở sau.",
+            "Khách đã có báo giá: tư vấn bằng cách check hạng mục dễ phát sinh, không ép đổi quyết định ngay."
           ]
         },
         {
-          heading: "Thông điệp quảng cáo",
-          points: [
-            "Căn đã nhận nhưng vẫn để trống? Đừng vội làm full — nên tính phương án theo mục đích sử dụng trước.",
-            "Studio/1N đang kẹt chưa khai thác? Làm nội thất vừa đủ để dễ cho thuê, không chôn thêm vốn sai cách.",
-            "Căn 2N/3N để trống: nhận 2 phương án nội thất — một để ở lâu dài, một tối ưu cho thuê.",
-            "Chưa biết để ở hay cho thuê? Bên em tư vấn 2 hướng ngân sách trước khi anh/chị xuống tiền.",
-            "Đã có báo giá nội thất nhưng vẫn lăn tăn? Gửi bên em check giúp phần nào nên làm, phần nào có thể tối ưu."
+          heading: "3. Ba campaign lõi",
+          cards: [
+            {
+              title: "Campaign A — Studio/1N cho thuê gọn",
+              subtitle: "Nhóm có thể nhiều lead nhưng khó ăn nhất, phải bán bằng gói rõ và lọc mạnh.",
+              points: [
+                "Tâm lý: kẹt hàng, đu đỉnh, không muốn bỏ thêm vốn, nhạy giá, muốn cho thuê nhưng sợ làm xong không hiệu quả.",
+                "Thông điệp: Studio/1N đang để trống? Làm nội thất vừa đủ để dễ cho thuê, không chôn thêm vốn sai cách.",
+                "Cách xử lý: không cho sale tư vấn lan man; lead ngân sách quá thấp hoặc chưa làm trong 1-2 tháng thì đưa vào tệp nuôi."
+              ],
+              table: {
+                headers: ["Gói", "Vai trò", "Cách bán"],
+                rows: [
+                  ["Gói tối thiểu", "Có đồ cơ bản để lên nhà cho thuê", "Không đẹp xuất sắc, nhưng đủ dùng"],
+                  ["Gói đủ cho thuê", "Đẹp vừa đủ, dễ chụp ảnh, dễ khách thuê", "Gói nên đẩy chính"],
+                  ["Gói đẹp hơn mặt bằng", "Dành cho căn view/tầng tốt, muốn giá thuê cao hơn", "Không bán đại trà"]
+                ]
+              }
+            },
+            {
+              title: "Campaign B — 2N/3N linh hoạt",
+              subtitle: "Mũi chính vì chủ có ngân sách tốt hơn, căn giá trị lớn hơn và nỗi lăn tăn rõ hơn.",
+              points: [
+                "Tâm lý: có thể mua tích sản, chưa cần cho thuê ngay, nhưng để trống lâu cũng bắt đầu xót.",
+                "Thông điệp: Căn 2N/3N để trống: nhận 2 phương án nội thất — một để ở lâu dài, một tối ưu cho thuê.",
+                "Cách xử lý: không hỏi ngay 'anh/chị muốn làm gói bao nhiêu', mà hỏi căn này thiên về để ở, cho thuê hay chưa quyết hẳn."
+              ],
+              table: {
+                headers: ["Phương án", "Dành cho ai", "Cách tư vấn"],
+                rows: [
+                  ["Cho thuê", "Chủ muốn khai thác sớm", "Bền, dễ thay, không làm quá tay"],
+                  ["Linh hoạt", "Chưa quyết ở hay cho thuê", "Đủ đẹp để ở sau này, vẫn cho thuê được"],
+                  ["Để ở lâu dài", "Chủ có khả năng về ở", "Công năng, vật liệu, thẩm mỹ tốt hơn"]
+                ]
+              }
+            },
+            {
+              title: "Campaign C — Second opinion",
+              subtitle: "Chen vào lúc khách đã có báo giá nhưng còn phân vân, không cần cạnh tranh từ đầu.",
+              points: [
+                "Thông điệp: Đã có báo giá nội thất nhưng vẫn lăn tăn? Gửi bên em check giúp phần nào dễ phát sinh, phần nào có thể tối ưu trước khi chốt.",
+                "Kênh hợp: Zalo data, remarketing, content TikTok và một phần ngân sách ads nhỏ.",
+                "Cách xử lý: không ép khách đổi quyết định; trước mắt check giúp báo giá đã đủ hạng mục chưa."
+              ],
+              table: {
+                headers: ["Checklist check báo giá", "Câu hỏi cần soi"],
+                rows: [
+                  ["Tủ bếp", "Đã tính phụ kiện, mặt đá, kính bếp chưa?"],
+                  ["Tủ áo", "Tính theo mét dài hay m2? Có ghi rõ vật liệu không?"],
+                  ["Đồ rời", "Rèm, sofa, giường, đệm, bàn ăn đã nằm trong báo giá chưa?"],
+                  ["Phát sinh", "Điện nước, ổ cắm, đèn, trần, vận chuyển, lắp đặt, bảo hành đã rõ chưa?"]
+                ]
+              }
+            }
           ]
         },
         {
-          heading: "Kênh triển khai",
+          heading: "4. Phân bổ ngân sách mũi 1",
+          paragraphs: [
+            "Nếu tổng ads tháng là 10-20 triệu, mũi 1 nên ăn khoảng 60% giai đoạn đầu. Không đọc sống chết bằng CPL thô; đọc bằng lead đủ điều kiện, lịch tư vấn/khảo sát và báo giá nóng."
+          ],
+          table: {
+            headers: ["Tổng ads", "Nhánh", "Ngân sách", "Mục tiêu"],
+            rows: [
+              ["10 triệu/tháng", "2N/3N linh hoạt", "3 triệu", "Lead chất lượng, ngân sách tốt"],
+              ["10 triệu/tháng", "Studio/1N cho thuê", "2 triệu", "Test volume và gói cho thuê"],
+              ["10 triệu/tháng", "Second opinion / retarget", "1 triệu", "Bám khách đã tương tác hoặc đã có báo giá"],
+              ["20 triệu/tháng", "2N/3N linh hoạt", "6 triệu", "Mũi chính"],
+              ["20 triệu/tháng", "Studio/1N cho thuê", "3 triệu", "Mũi phụ tạo volume"],
+              ["20 triệu/tháng", "Second opinion", "2 triệu", "Chen vào khách đang so báo giá"],
+              ["20 triệu/tháng", "Retarget content", "1 triệu", "Nuôi trust"]
+            ]
+          },
           points: [
-            "Zalo data: tiếp cận mềm, cá nhân hóa theo loại căn/khu/tình trạng nếu có thông tin.",
-            "Zalo/Facebook Lead Form: chạy ads vào insight căn trống, không chạy broad nội thất chung cư.",
-            "Google Search ngách: nội thất căn hộ cho thuê, nội thất căn hộ đã bàn giao, nội thất căn hộ Ocean Park.",
-            "TikTok: làm video phân tích bài toán căn trống, dùng để nuôi trust và retarget.",
-            "Remarketing: bám lại người đã xem video, bấm form, inbox, hoặc từng tương tác với page/OA."
+            "Với 6 triệu và CPL khoảng 400k, chỉ kỳ vọng khoảng 15 lead thô; form phải lọc tốt và sale phải gọi rất nhanh.",
+            "Với 10-12 triệu, kỳ vọng khoảng 25-30 lead thô; mục tiêu thực tế là lọc ra 8-12 lead đủ điều kiện, 4-6 lịch tư vấn/khảo sát, 1 hợp đồng hoặc 2-3 báo giá nóng."
           ]
         },
         {
-          heading: "Form lọc lead nên hỏi",
-          points: [
-            "Anh/chị sở hữu căn loại nào: studio, 1N, 2N, 2N+, 3N?",
-            "Căn đã nhận nhà bao lâu rồi: dưới 1 tháng, 1–3 tháng, 3–6 tháng, trên 6 tháng?",
-            "Hiện trạng căn: trống, đã có đồ cơ bản, đang cho thuê, đang để bán, chưa rõ kế hoạch?",
-            "Mục đích sắp tới: để ở, cho thuê, bán lại, giữ tài sản, chưa quyết?",
-            "Ngân sách dự kiến: dưới 100tr, 100–200tr, 200–400tr, trên 400tr?"
+          heading: "5. Bộ nội dung cần chuẩn bị",
+          cards: [
+            {
+              title: "4 concept ảnh quảng cáo",
+              table: {
+                headers: ["Ảnh", "Headline", "Sub", "CTA", "Hình ảnh"],
+                rows: [
+                  ["Căn trống sau bàn giao", "Căn đã nhận nhưng vẫn để trống?", "Tư vấn nên làm nội thất theo hướng ở, cho thuê hay giữ tài sản.", "Gửi loại căn để nhận phương án phù hợp.", "Phòng khách căn hộ trống hoặc bán trống, tone sáng, không quá luxury."],
+                  ["Studio/1N cho thuê", "Studio/1N cho thuê: đừng làm thừa", "Gói vừa đủ đẹp, dễ cho thuê, tối ưu vốn.", "Nhận checklist đồ cần làm.", "Căn nhỏ, gọn, sáng, đủ giường, tủ, bàn, sofa nhỏ hoặc bàn ăn nhỏ."],
+                  ["2N/3N linh hoạt", "Căn 2N/3N để trống?", "Nhận 2 phương án: để ở lâu dài hoặc tối ưu cho thuê.", "Tư vấn theo ngân sách thực tế.", "Phòng khách 2N/3N đẹp vừa phải, có cảm giác sống thật."],
+                  ["Check báo giá", "Đã có báo giá nội thất?", "Check lại phần dễ phát sinh trước khi chốt.", "Gửi báo giá để được tư vấn.", "Bàn làm việc, bản vẽ, báo giá, mẫu vật liệu."]
+                ]
+              }
+            },
+            {
+              title: "10 video TikTok/Reels đầu tiên",
+              points: [
+                "Căn hộ để trống 3-6 tháng: có nên làm nội thất không?",
+                "Studio/1N cho thuê: 5 món bắt buộc phải có.",
+                "Studio/1N cho thuê: 5 món không nên làm thừa.",
+                "Căn 2N/3N để trống: làm để ở hay cho thuê?",
+                "Chưa quyết ở hay cho thuê thì nên thiết kế kiểu gì?",
+                "Vì sao cùng căn 2N báo giá có thể lệch cả trăm triệu?",
+                "Đã có báo giá nội thất: check 7 mục này trước khi chốt.",
+                "Làm nội thất cho thuê: đẹp vừa đủ là thế nào?",
+                "Căn trống càng lâu càng khó ra quyết định — nên bắt đầu từ đâu?",
+                "Có nên làm full nội thất khi chưa có khách thuê không?"
+              ]
+            },
+            {
+              title: "Tài liệu sale phải có",
+              points: [
+                "Bảng gói studio/1N cho thuê: tối thiểu, đủ cho thuê, đẹp hơn mặt bằng.",
+                "Bảng 2N/3N ba phương án: cho thuê, linh hoạt, để ở lâu dài.",
+                "Checklist '10 mục dễ phát sinh trong báo giá nội thất căn hộ' cho campaign second opinion."
+              ]
+            }
           ]
         },
         {
-          heading: "Việc cần làm ngay",
+          heading: "6. Form lọc lead",
+          paragraphs: [
+            "Không dùng form chỉ có họ tên, số điện thoại, nhu cầu. Form phải hỏi đủ để sale biết khách thuộc nhánh nào và có đáng gọi sâu không. Câu ngân sách có thể làm giảm số lead, nhưng tăng chất lượng."
+          ],
+          table: {
+            headers: ["Câu hỏi", "Option"],
+            rows: [
+              ["Anh/chị sở hữu loại căn nào?", "Studio, 1N, 2N, 2N+, 3N"],
+              ["Căn đã nhận nhà bao lâu?", "Chưa nhận, dưới 1 tháng, 1-3 tháng, 3-6 tháng, trên 6 tháng"],
+              ["Hiện trạng căn?", "Đang trống, đã có đồ cơ bản, đang cho thuê, đang để bán, chưa rõ kế hoạch"],
+              ["Mục đích sắp tới?", "Để ở, cho thuê, bán lại, giữ tài sản, chưa quyết"],
+              ["Ngân sách dự kiến?", "Dưới 100tr, 100-200tr, 200-400tr, trên 400tr, chưa rõ cần tư vấn"]
+            ]
+          }
+        },
+        {
+          heading: "7. Sale xử lý lead mũi 1",
+          scripts: [
+            {
+              title: "Câu mở đầu chung",
+              body: "Em thấy anh/chị có quan tâm phương án cho căn đã nhận nhưng đang để trống. Em hỏi nhanh 2 ý để tư vấn đúng: căn mình đang định cho thuê, để ở hay vẫn chưa quyết hẳn ạ?"
+            },
+            {
+              title: "Studio/1N — câu hỏi và câu tư vấn",
+              body: "Hỏi nhanh:\n- Căn mình đang muốn cho thuê mức khoảng bao nhiêu/tháng?\n- Anh/chị muốn làm đủ cho thuê hay muốn làm đẹp hơn mặt bằng?\n- Căn đã có sẵn hạng mục gì chưa?\n- Mình muốn khai thác trong bao lâu?\n- Ngân sách tối đa anh/chị thấy hợp lý là khoảng nào?\n\nCâu tư vấn:\nVới căn studio/1N để cho thuê, bên em thường không khuyên làm quá tay ngay từ đầu. Mình nên chốt mục tiêu thuê trước, rồi mới tính gói nội thất tương ứng."
+            },
+            {
+              title: "2N/3N — câu hỏi và câu bán chính",
+              body: "Hỏi nhanh:\n- Căn này anh/chị mua để ở, cho thuê, hay tích sản giữ lâu dài?\n- Trong 6-12 tháng tới có khả năng dùng đến căn không?\n- Anh/chị thích phương án tiết kiệm để khai thác trước hay phương án làm chỉn chu để sau này ở cũng được?\n- Nhà có mấy người dùng nếu sau này về ở?\n- Có phong cách hoặc mức ngân sách mong muốn chưa?\n\nCâu tư vấn:\nVới căn 2N/3N, bên em không muốn tư vấn một phương án duy nhất. Em sẽ tách cho anh/chị 2 hướng: một hướng làm để cho thuê tối ưu vốn, một hướng làm linh hoạt để sau này về ở vẫn không phải sửa lại nhiều."
+            },
+            {
+              title: "Khách đã có báo giá — câu hỏi và câu tư vấn",
+              body: "Hỏi nhanh:\n- Anh/chị đang lăn tăn phần giá, vật liệu hay hạng mục phát sinh?\n- Báo giá hiện tại đã bao gồm thiết bị rời chưa?\n- Đã có phụ kiện, ray bản lề, mặt đá, kính bếp, đèn, rèm chưa?\n- Anh/chị muốn bên em check để tối ưu chi phí hay check rủi ro phát sinh?\n\nCâu tư vấn:\nBên em không cần anh/chị đổi quyết định ngay. Trước mắt em check giúp xem báo giá đó đã đủ hạng mục chưa, phần nào hợp lý, phần nào có thể tối ưu. Sau đó anh/chị tự so sánh sẽ dễ hơn."
+            }
+          ]
+        },
+        {
+          heading: "8. Kịch bản follow Zalo",
+          scripts: [
+            {
+              title: "Sau cuộc gọi lần 1",
+              body: "Em gửi anh/chị tóm tắt nhanh theo căn của mình ạ:\n\nCăn hiện tại: [loại căn]\nHướng đang cân nhắc: [ở / cho thuê / chưa quyết]\nViệc nên làm trước: chốt mức ngân sách và mục đích sử dụng, sau đó mới lên gói nội thất phù hợp.\n\nEm gửi kèm checklist để anh/chị xem trước. Nếu anh/chị gửi thêm mặt bằng hoặc ảnh hiện trạng, bên em có thể tư vấn sát hơn."
+            },
+            {
+              title: "Follow sau 24 giờ",
+              body: "Em chào anh/chị. Hôm qua em có gửi checklist cho căn [loại căn].\nVới tình trạng căn đang để trống, bên em thường tách thành 2 hướng: làm tối ưu cho thuê hoặc làm linh hoạt để sau này ở vẫn ổn.\n\nAnh/chị đang nghiêng về hướng nào hơn để em gửi mẫu phương án phù hợp ạ?"
+            },
+            {
+              title: "Follow sau 72 giờ",
+              body: "Em gửi anh/chị thêm một lưu ý nhỏ: với căn để trống lâu, mình không nhất thiết phải làm full ngay. Quan trọng là xác định mục tiêu khai thác trước, tránh làm thừa những hạng mục không giúp tăng giá trị sử dụng hoặc giá thuê.\n\nAnh/chị gửi em loại căn/mặt bằng, em check nhanh hướng ngân sách phù hợp cho mình ạ."
+            },
+            {
+              title: "Với khách đã có báo giá",
+              body: "Em chào anh/chị. Nếu anh/chị đã có báo giá bên khác rồi, anh/chị có thể che phần thông tin riêng và gửi em xem qua.\nBên em sẽ check giúp các mục dễ phát sinh như phụ kiện, mặt đá, thiết bị rời, rèm, đèn, vận chuyển/lắp đặt, để anh/chị dễ so sánh trước khi chốt."
+            }
+          ]
+        },
+        {
+          heading: "9. Lộ trình triển khai 30 ngày",
+          steps: [
+            {
+              label: "Ngày 1-3",
+              title: "Chuẩn hóa data và offer",
+              points: [
+                "Lọc data theo loại căn: studio/1N/2N/2N+/3N.",
+                "Lọc theo tòa/phân khu nếu có.",
+                "Tách nhóm đã bàn giao 3-6 tháng ra trước.",
+                "Chuẩn bị bảng gói studio/1N, bảng 2 phương án cho 2N/3N, checklist check báo giá."
+              ],
+              output: "File data có cột loại căn, tòa, trạng thái gọi, nhu cầu, ngân sách, bước tiếp theo; 3 offer rõ ràng; 3 script sale."
+            },
+            {
+              label: "Ngày 4-7",
+              title: "Sản xuất nội dung đủ chạy test",
+              points: [
+                "Làm 4 ảnh quảng cáo, 6 video TikTok đầu tiên, 2 form lead.",
+                "Soạn 3 mẫu tin nhắn Zalo.",
+                "Tạo 1 checklist dạng ảnh/PDF.",
+                "Không cần hoàn hảo; cần đủ chạy test."
+              ]
+            },
+            {
+              label: "Tuần 2",
+              title: "Chạy test 2 campaign chính",
+              points: [
+                "Chạy 2N/3N linh hoạt và Studio/1N cho thuê.",
+                "Mỗi campaign 2 mẫu thông điệp.",
+                "Không chia quá vụn vì ngân sách nhỏ sẽ không đủ dữ liệu.",
+                "Theo dõi lead có đúng loại căn, đúng tình trạng căn trống, có ngân sách, gọi được và có lịch không."
+              ]
+            },
+            {
+              label: "Tuần 3",
+              title: "Thêm second opinion",
+              points: [
+                "Đẩy campaign second opinion khi sale bắt đầu gặp khách đang tham khảo bên khác, đã có báo giá hoặc đang so giá.",
+                "Mục tiêu không phải lấy nhiều lead mới, mà kéo lại nhóm đang phân vân.",
+                "Dùng Zalo follow và remarketing để bám lại."
+              ]
+            },
+            {
+              label: "Tuần 4",
+              title: "Review sống/chết",
+              points: [
+                "Không kết luận bằng CPL.",
+                "Giữ nhánh tạo lịch khảo sát và báo giá nóng.",
+                "Cắt hoặc đưa vào nuôi những nhánh chỉ tạo lead rẻ nhưng không có lịch thật."
+              ]
+            }
+          ],
+          table: {
+            headers: ["Chỉ số", "Câu hỏi cần trả lời"],
+            rows: [
+              ["Lead đúng tệp", "Có đúng căn trống không?"],
+              ["Loại căn", "2N/3N chiếm bao nhiêu phần trăm?"],
+              ["Ngân sách", "Có bao nhiêu lead 200tr+?"],
+              ["Gọi được", "Sale có liên hệ được trong ngày không?"],
+              ["Lịch khảo sát", "Có ra lịch thật không?"],
+              ["Báo giá", "Có khách đủ thông tin để báo giá không?"],
+              ["Hợp đồng", "Có đơn hoặc khách nóng không?"]
+            ]
+          }
+        },
+        {
+          heading: "10. Kết luận mũi 1",
           points: [
-            "Làm 3 gói sale kit: studio/1N cho thuê, 2N/3N linh hoạt, second opinion check báo giá.",
-            "Chuẩn bị bảng 'đồ bắt buộc / đồ có thể bỏ' cho căn cho thuê.",
-            "Chuẩn bị bảng '2 phương án ngân sách' cho căn 2N/3N: ở lâu dài và cho thuê.",
-            "Viết 3 script gọi điện riêng cho studio/1N, 2N/3N, khách đã có báo giá.",
-            "Mỗi tuần review lead theo loại căn để biết tệp nào thực sự có lịch khảo sát."
+            "2N/3N căn trống là mũi chính.",
+            "Studio/1N cho thuê là mũi phụ, chỉ chạy khi có gói chuẩn.",
+            "Second opinion là mũi chen vào khách đã bị đối thủ tiếp cận.",
+            "Content TikTok phục vụ trust và retarget, không làm cho vui.",
+            "Form lọc lead phải hỏi loại căn, trạng thái, mục đích và ngân sách.",
+            "Sale không được báo giá vội, phải hỏi mục đích sử dụng trước."
+          ],
+          scripts: [
+            {
+              title: "Câu định vị quan trọng nhất",
+              body: "Căn đã nhận nhưng vẫn để trống? Đừng vội làm full. Hãy chọn phương án nội thất theo đúng mục đích: cho thuê, để ở hay giữ tài sản."
+            }
           ]
         }
       ],
       checklist: [
-        "Ưu tiên 2N/3N trước, studio/1N chỉ chạy nếu đã có gói chuẩn.",
-        "Không dùng ảnh quá luxury cho tệp đầu tư cho thuê.",
-        "Không để sale báo giá vội khi chưa biết mục đích sử dụng căn.",
-        "Mọi lead phải được gắn tag: loại căn, mục đích, ngân sách, trạng thái căn.",
-        "Cam sống nếu tạo được lịch khảo sát thật với ngân sách khách 200tr+."
+        "Ngày 1-3: chốt data, offer, script, checklist.",
+        "Ngày 4-7: làm 4 ảnh ads, 6 video, 2 form, 3 tin Zalo.",
+        "Tuần 2: test 2N/3N linh hoạt và Studio/1N cho thuê.",
+        "Tuần 3: thêm second opinion cho khách đang so báo giá.",
+        "Tuần 4: giữ nhánh có lịch khảo sát/báo giá nóng, cắt nhánh chỉ tạo lead rẻ."
       ]
     },
     {
@@ -515,18 +872,11 @@ export default function InteriorAdsMindmap() {
           </div>
 
           <div className={`p-5 md:p-6 ${active.bg}`}>
-            <div className="grid gap-4 lg:grid-cols-2">
+            <div className={active.detailed ? "grid gap-4" : "grid gap-4 lg:grid-cols-2"}>
               {active.sections.map((section) => (
                 <div key={section.heading} className="rounded-3xl border border-white/70 bg-white p-5 shadow-sm">
                   <h3 className="text-lg font-semibold">{section.heading}</h3>
-                  <ul className="mt-4 space-y-3 text-sm leading-6 text-neutral-700">
-                    {section.points.map((point) => (
-                      <li key={point} className="flex gap-3">
-                        <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-neutral-800" />
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <SectionContent section={section} />
                 </div>
               ))}
             </div>
